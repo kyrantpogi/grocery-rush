@@ -1,0 +1,145 @@
+{
+    "category": "vegetable",
+    "items": [
+        {
+            "name": "Broccoli A",
+            "price": 8.99,
+            "image": "./assets/vegetable_items/broccoli_a.png"
+        },
+        {
+            "name": "Broccoli B",
+            "price": 12.99,
+            "image": "./assets/vegetable_items/broccoli_b.png"
+        },
+        {
+            "name": "Broccoli C",
+            "price": 15.99,
+            "image": "./assets/vegetable_items/broccoli_c.png"
+        },
+        {
+            "name": "Broccoli D",
+            "price": 19.99,
+            "image": "./assets/vegetable_items/broccoli_a.png"
+        },
+        {
+            "name": "Carrot A",
+            "price": 5.99,
+            "image": "./assets/vegetable_items/carrot_a.png"
+        },
+        {
+            "name": "Carrot B",
+            "price": 8.49,
+            "image": "./assets/vegetable_items/carrot_b.png"
+        },
+        {
+            "name": "Carrot C",
+            "price": 9.59,
+            "image": "./assets/vegetable_items/carrot_c.png"
+        },
+        {
+            "name": "Carrot D",
+            "price": 12.99,
+            "image": "./assets/vegetable_items/carrot_d.png"
+        },
+        {
+            "name": "Garlic A",
+            "price": 4.49,
+            "image": "./assets/vegetable_items/garlic_a.png"
+        },
+        {
+            "name": "Garlic B",
+            "price": 6.99,
+            "image": "./assets/vegetable_items/garlic_b.png"
+        },
+        {
+            "name": "Garlic C",
+            "price": 9.49,
+            "image": "./assets/vegetable_items/garlic_c.png"
+        },
+        {
+            "name": "Garlic D",
+            "price": 13.99,
+            "image": "./assets/vegetable_items/garlic_d.png"
+        },
+        {
+            "name": "Lettuce A",
+            "price": 6.99,
+            "image": "./assets/vegetable_items/lettuce_a.png"
+        },
+        {
+            "name": "Lettuce B",
+            "price": 8.99,
+            "image": "./assets/vegetable_items/lettuce_b.png"
+        },
+        {
+            "name": "Lettuce C",
+            "price": 12.59,
+            "image": "./assets/vegetable_items/lettuce_c.png"
+        },
+        {
+            "name": "Lettuce D",
+            "price": 15.99,
+            "image": "./assets/vegetable_items/lettuce_d.png"
+        },
+        {
+            "name": "Onion A",
+            "price": 4.99,
+            "image": "./assets/vegetable_items/onion_a.png"
+        },
+        {
+            "name": "Onion B",
+            "price": 7.59,
+            "image": "./assets/vegetable_items/onion_b.png"
+        },
+        {
+            "name": "Onion C",
+            "price": 11.99,
+            "image": "./assets/vegetable_items/onion_c.png"
+        },
+        {
+            "name": "Onion D",
+            "price": 15.39,
+            "image": "./assets/vegetable_items/onion_d.png"
+        },
+        {
+            "name": "Potato A",
+            "price": 5.99,
+            "image": "./assets/vegetable_items/potato_a.png"
+        },
+        {
+            "name": "Potato B",
+            "price": 7.99,
+            "image": "./assets/vegetable_items/potato_b.png"
+        },
+        {
+            "name": "Potato C",
+            "price": 9.99,
+            "image": "./assets/vegetable_items/potato_c.png"
+        },
+        {
+            "name": "Potato D",
+            "price": 15.99,
+            "image": "./assets/vegetable_items/potato_d.png"
+        },
+        {
+            "name": "Tomato A",
+            "price": 6.59,
+            "image": "./assets/vegetable_items/tomato_a.png"
+        },
+        {
+            "name": "Tomato B",
+            "price": 8.99,
+            "image": "./assets/vegetable_items/tomato_b.png"
+        },
+        {
+            "name": "Tomato C",
+            "price": 10.49,
+            "image": "./assets/vegetable_items/tomato_c.png"
+        },
+        {
+            "name": "Tomato D",
+            "price": 16.99,
+            "image": "./assets/vegetable_items/tomato_d.png"
+        }
+    ]
+}

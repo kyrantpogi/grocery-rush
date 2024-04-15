@@ -1,0 +1,110 @@
+{
+    "category": "shelf",
+    "items": [
+        {
+            "name": "Coffee A",
+            "price": 19.49,
+            "image": "./assets/shelf_items/coffee_a.png"
+        },
+        {
+            "name": "Coffee B",
+            "price": 25.99,
+            "image": "./assets/shelf_items/coffee_b.png"
+        },
+        {
+            "name": "Coffee C",
+            "price": 29.99,
+            "image": "./assets/shelf_items/coffee_c.png"
+        },
+        {
+            "name": "Coffee D",
+            "price": 34.59,
+            "image": "./assets/shelf_items/coffee_d.png"
+        },
+        {
+            "name": "Egg A",
+            "price": 5.99,
+            "image": "./assets/shelf_items/egg_a.png"
+        },
+        {
+            "name": "Egg B",
+            "price": 7.99,
+            "image": "./assets/shelf_items/egg_b.png"
+        },
+        {
+            "name": "Egg C",
+            "price": 14.49,
+            "image": "./assets/shelf_items/egg_c.png"
+        },
+        {
+            "name": "Egg D",
+            "price": 20.99,
+            "image": "./assets/shelf_items/egg_d.png"
+        },
+        {
+            "name": "Juice A",
+            "price": 17.99,
+            "image": "./assets/shelf_items/juice_a.png"
+        },
+        {
+            "name": "Juice B",
+            "price": 22.99,
+            "image": "./assets/shelf_items/juice_b.png"
+        },
+        {
+            "name": "Juice C",
+            "price": 28.49,
+            "image": "./assets/shelf_items/juice_c.png"
+        },
+        {
+            "name": "Juice D",
+            "price": 32.99,
+            "image": "./assets/shelf_items/juice_d.png"
+        },
+        {
+            "name": "Milk A",
+            "price": 12.99,
+            "image": "./assets/shelf_items/milk_a.png"
+        },
+        {
+            "name": "Milk B",
+            "price": 25.99,
+            "image": "./assets/shelf_items/milk_b.png"
+        },
+        {
+            "name": "Milk C",
+            "price": 20.99,
+            "image": "./assets/shelf_items/milk_c.png"
+        },
+        {
+            "name": "Milk D",
+            "price": 35.49,
+            "image": "./assets/shelf_items/milk_d.png"
+        },
+        {
+            "name": "Rice A",
+            "price": 20.00,
+            "image": "./assets/shelf_items/rice_a.png"
+        },
+        {
+            "name": "Rice B",
+            "price": 24.99,
+            "image": "./assets/shelf_items/rice_b.png"
+        },
+        {
+            "name": "Rice C",
+            "price": 28.99,
+            "image": "./assets/shelf_items/rice_c.png"
+        },
+        {
+            "name": "Rice D",
+            "price": 37.99,
+            "image": "./assets/shelf_items/rice_d.png"
+        },
+        {
+            "name": "Rice D",
+            "price": 37.99,
+            "image": "./assets/shelf_items/rice_d.png"
+        }
+    ]
+}

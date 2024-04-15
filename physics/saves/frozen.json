@@ -1,0 +1,105 @@
+{
+    "category": "frozen",
+    "items": [
+        {
+            "name": "Chicken A",
+            "price": 23.59,
+            "image": "./assets/frozen_items/chicken_a.png"
+        },
+        {
+            "name": "Chicken B",
+            "price": 27.99,
+            "image": "./assets/frozen_items/chicken_b.png"
+        },
+        {
+            "name": "Chicken C",
+            "price": 33.29,
+            "image": "./assets/frozen_items/chicken_c.png"
+        },
+        {
+            "name": "Chicken D",
+            "price": 40.99,
+            "image": "./assets/frozen_items/chicken_d.png"
+        },
+        {
+            "name": "Fries A",
+            "price": 15.99,
+            "image": "./assets/frozen_items/fries_a.png"
+        },
+        {
+            "name": "Fries B",
+            "price": 19.99,
+            "image": "./assets/frozen_items/fries_b.png"
+        },
+        {
+            "name": "Fries C",
+            "price": 27.89,
+            "image": "./assets/frozen_items/fries_c.png"
+        },
+        {
+            "name": "Fries D",
+            "price": 38.99,
+            "image": "./assets/frozen_items/fries_d.png"
+        },
+        {
+            "name": "Hotdogs A",
+            "price": 22.99,
+            "image": "./assets/frozen_items/hotdog_a.png"
+        },
+        {
+            "name": "Hotdogs B",
+            "price": 27.89,
+            "image": "./assets/frozen_items/hotdog_b.png"
+        },
+        {
+            "name": "Hotdogs C",
+            "price": 32.89,
+            "image": "./assets/frozen_items/hotdog_c.png"
+        },
+        {
+            "name": "Hotdogs D",
+            "price": 42.99,
+            "image": "./assets/frozen_items/hotdog_d.png"
+        },
+        {
+            "name": "Nuggets A",
+            "price": 25.99,
+            "image": "./assets/frozen_items/nuggets_a.png"
+        },
+        {
+            "name": "Nuggets B",
+            "price": 29.99,
+            "image": "./assets/frozen_items/nuggets_b.png"
+        },
+        {
+            "name": "Nuggets C",
+            "price": 34.99,
+            "image": "./assets/frozen_items/nuggets_c.png"
+        },
+        {
+            "name": "Nuggets D",
+            "price": 45.59,
+            "image": "./assets/frozen_items/nuggets_d.png"
+        },
+        {
+            "name": "Pork A",
+            "price": 24.99,
+            "image": "./assets/frozen_items/pork_a.png"
+        },
+        {
+            "name": "Pork B",
+            "price": 30.29,
+            "image": "./assets/frozen_items/pork_b.png"
+        },
+        {
+            "name": "Pork C",
+            "price": 39.99,
+            "image": "./assets/frozen_items/pork_c.png"
+        },
+        {
+            "name": "Pork D",
+            "price": 24.99,
+            "image": "./assets/frozen_items/pork_d.png"
+        }
+    ]
+}

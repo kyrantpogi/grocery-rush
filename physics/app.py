@@ -166,11 +166,11 @@ class GamePrototype:
 		self.requirements_to_win = self.level["requirements"]
 
 		#player
-		self.player = Player(500, 500, "#D2042D")
+		self.player = Player(300, 131, "#D2042D")
 		self.player_velocity = 3
 
 		#cashier 
-		self.cashier = Cashier(0, 0)
+		self.cashier = Cashier(-7, 131)
 
 		#FIXED VARIABLES
 		self.camera = Camera(self.player, (SCREEN_WIDTH/2) - 150, (SCREEN_HEIGHT/2) - 150, 300, 300, 3)
@@ -188,30 +188,32 @@ class GamePrototype:
 			b = Bot(bot["x"], bot["y"], faces[random.randrange(0, len(faces))])
 			self.camera.sprite_list.append(b)
 
+		self.shelf_list = []
 
 		#load shelves
 		for prop in self.level["shelves"]:
 			shelf_items = []
 
 			if prop["type"] == "freezer":
-				for i in range(0, 12):
+				for i in range(0, 18):
 					item = self.frozen_items["items"][random.randrange(0, len(self.frozen_items["items"]))]
 					product = Item(item["name"], item["price"], item["image"])
 					shelf_items.append(product)
 
 			if prop["type"] == "vegetable":
-				for i in range(0, 12):
+				for i in range(0, 18):
 					item = self.vegetable_items["items"][random.randrange(0, len(self.vegetable_items["items"]))]
 					product = Item(item["name"], item["price"], item["image"])
 					shelf_items.append(product)
 			
 			if prop["type"] == "basic":
-				for i in range(0, 12):
+				for i in range(0, 18):
 					item = self.shelf_items["items"][random.randrange(0, len(self.shelf_items["items"]))]
 					product = Item(item["name"], item["price"], item["image"])
 					shelf_items.append(product)
 
 			shelf = Shelf(prop["type"], prop["x"], prop["y"], shelf_items)
+			self.shelf_list.append(shelf)
 			self.camera.sprite_list.append(shelf)
 
 		#load puddles
@@ -219,8 +221,8 @@ class GamePrototype:
 			p = Puddle(puddle["x"], puddle["y"])
 			self.camera.sprite_list.append(p)
 
-		self.player_inventory = DialogBox("?", 0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50)
-		self.shelf_items_text = DialogBox("Shelf Items: ", 0, 0, SCREEN_WIDTH, 50)
+		self.player_inventory = DialogBox("?", 0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50, 20)
+		self.shelf_items_text = DialogBox("Shelf Items: ", 299.5, 174.5, 600, 350, 20)
 		self.list_to_display_pos_inventory = [
 			(237, 645),
 			(326, 645),
@@ -233,23 +235,29 @@ class GamePrototype:
 			(949, 645)
 		]
 		self.list_to_display_pos = [
-			(137, 0),
-			(226, 0),
-			(315, 0),
-			(404, 0),
-			(493, 0),
-			(582, 0),
-			(671, 0),
-			(760, 0),
-			(849, 0),
-			(938, 0),
-			(1027, 0),
-			(1116, 0),
+			(334, 249),
+			(431, 249),
+			(528, 249),
+			(625, 249),
+			(722, 249),
+			(819, 249),
+			(334, 339),
+			(431, 339),
+			(528, 339),
+			(625, 339),
+			(722, 339),
+			(819, 339),
+			(334, 429),
+			(431, 429),
+			(528, 429),
+			(625, 429),
+			(722, 429),
+			(819, 429)
 		]
 		self.list_to_display = []
 		self.show_item_dialog = False
 		
-		self.cutscene = False
+		self.cutscene = True
 		self.cutscene_text = DisplayText(self.level["cutscene-text"], size=14,color="#ffffff")
 
 		self.current_shelf = ""
@@ -264,11 +272,13 @@ class GamePrototype:
 		self.target_y = 0
 
 		self.mouse_rect = CollisionBox(0, 0, 10, 10)
+
+		self.show_item_dialog_2 = False
 	
 	def show_timer(self):
 		pygame.draw.rect(screen, self.player.health_bar_color, (SCREEN_WIDTH - 110, 10, self.player.health, 10)) #health bar
 		pygame.draw.rect(screen, "#ffffff", (SCREEN_WIDTH - 110, 9, 101, 10+1), 3) #BACKGROUND
-		
+	
 
 	def run(self, screen, game_state):
 		global running
@@ -277,27 +287,36 @@ class GamePrototype:
 				running = False
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if event.button == 3:
-					self.target_x, self.target_y = pygame.mouse.get_pos()
+					if not self.show_item_dialog_2:
+						self.target_x, self.target_y = pygame.mouse.get_pos()
 
-					print(f"targetx: {self.target_x}, targety: {self.target_y}")
 
-					run = (self.target_x - self.player.x)
-					rise = (self.target_y - self.player.y)
+						run = (self.target_x - self.player.x)
+						rise = (self.target_y - self.player.y)
 
-					angle = math.atan2(run, rise)
+						angle = math.atan2(run, rise)
 
-					self.vel_x = math.sin(angle) * 3.4
-					self.vel_y = math.cos(angle) * 3.4
+						self.vel_x = math.sin(angle) * 3.4
+						self.vel_y = math.cos(angle) * 3.4
 
-					self.mouse_rect.x = self.target_x
-					self.mouse_rect.y = self.target_y
+						self.mouse_rect.x = self.target_x
+						self.mouse_rect.y = self.target_y
 
-					self.player.is_moving = True
+						self.player.is_moving = True
+
 				if event.button == 1:
 					print("LEFT CLICK")
 					self.player.is_moving = False
 					self.vel_x = 0
 					self.vel_y = 0
+
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_e:
+					print(self.show_item_dialog)
+					if self.show_item_dialog:
+						self.show_item_dialog_2 = not self.show_item_dialog_2
+						print("go")
+						
 
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_w:
@@ -338,42 +357,45 @@ class GamePrototype:
 			screen.blit(self.background, (self.background_x,self.background_y)) #draw background
 			
 			keys = pygame.key.get_pressed()
-			if keys[pygame.K_w]:
-				if not self.background_y >= 0:
-					self.background_y += self.player_velocity
 
-					self.vel_x = 0
-					self.vel_y = 0
-					self.player.y += self.player_velocity
-					self.player.is_moving = False
-					self.camera.update_pos("up")	
-			if keys[pygame.K_s]:
-				if not self.background_y + self.background_height <= SCREEN_HEIGHT - 50:
-					self.background_y -= self.player_velocity
+			if not self.show_item_dialog_2:
+				if keys[pygame.K_w]:
+					if not self.background_y >= 0:
+						self.background_y += self.player_velocity
 
-					self.vel_x = 0
-					self.vel_y = 0
-					self.player.y -= self.player_velocity
-					self.player.is_moving = False
-					self.camera.update_pos("down")	
-			if keys[pygame.K_a]:
-				if not self.background_x >= 0:
-					self.background_x += self.player_velocity
+						self.vel_x = 0
+						self.vel_y = 0
+						self.player.y += self.player_velocity
+						self.player.is_moving = False
+						self.camera.update_pos("up")	
+				if keys[pygame.K_s]:
+					if not self.background_y + self.background_height <= SCREEN_HEIGHT - 50:
+						self.background_y -= self.player_velocity
 
-					self.vel_x = 0
-					self.vel_y = 0
-					self.player.x += self.player_velocity
-					self.player.is_moving = False
-					self.camera.update_pos("left")			
-			if keys[pygame.K_d]:
-				if not self.background_x + self.background_width <= SCREEN_WIDTH:
-					self.background_x -= self.player_velocity
+						self.vel_x = 0
+						self.vel_y = 0
+						self.player.y -= self.player_velocity
+						self.player.is_moving = False
+						self.camera.update_pos("down")	
+				if keys[pygame.K_a]:
+					if not self.background_x >= 0:
+						self.background_x += self.player_velocity
 
-					self.vel_x = 0
-					self.vel_y = 0
-					self.player.x -= self.player_velocity
-					self.player.is_moving = False
-					self.camera.update_pos("right")			
+						self.vel_x = 0
+						self.vel_y = 0
+						self.player.x += self.player_velocity
+						self.player.is_moving = False
+						self.camera.update_pos("left")			
+				if keys[pygame.K_d]:
+					if not self.background_x + self.background_width <= SCREEN_WIDTH:
+						self.background_x -= self.player_velocity
+
+						self.vel_x = 0
+						self.vel_y = 0
+						self.player.x -= self.player_velocity
+						self.player.is_moving = False
+						self.camera.update_pos("right")		
+				
 
 			for structure in self.camera.sprite_list:
 				phb = self.player.hit_box
@@ -393,6 +415,19 @@ class GamePrototype:
 			self.player.draw(screen, self.target_x, self.target_y)
 
 			#collision loop for shelf, bots, and puddle
+			for structure in self.camera.sprite_list: # FOR THE DIALOG BOX ONLY
+				phb = self.player.hit_box
+				if structure.structure == "shelf":
+					hhb = structure.hit_box
+					if phb.check_hit(hhb.x, hhb.y, hhb.width, hhb.height):
+						self.show_item_dialog = True
+						self.list_to_display = structure.items
+						self.current_shelf = structure
+						break
+					else:
+						self.current_shelf = structure
+						self.show_item_dialog = False
+
 			for structure in self.camera.sprite_list:
 				phb = self.player.hit_box
 				#check if shelf
@@ -401,25 +436,26 @@ class GamePrototype:
 					hhb = structure.hit_box
 
 					if phb.check_hit(shb.x, shb.y, shb.width, shb.height):
-						
 						self.vel_x = 0
 						self.vel_y = 0
 						break
 
-					#SHOW ITEMS IN DIALOG BOX
-					if phb.check_hit(hhb.x, hhb.y, hhb.width, hhb.height):
-						self.list_to_display = structure.items
-						self.show_item_dialog = True
-						self.current_shelf = structure
-						break
-					else:
-						self.current_shelf = structure
-						self.show_item_dialog = False
-
+					structure.is_player_in_hover(self.player)
+					
+											
 				if structure.structure == "bot":
 					bhb = structure.hit_box
 					if phb.check_hit(bhb.x, bhb.y, bhb.width, bhb.height):
-						self.player.health -= 0.10
+						self.player.health -= 1
+
+					#check if it hit a shelf
+					for building in self.camera.sprite_list:
+						if building.structure == "shelf":
+							shelf_hit_box = building.hit_box_inner
+							if shelf_hit_box.check_hit(structure.hit_box.x, structure.hit_box.y, structure.hit_box.width, structure.hit_box.height):
+								structure.vel_x = 0 # RESET
+								structure.vel_y = 0 # RESET
+								break
 
 				#THIS WILL DETERMINE THE WINNER
 				if structure.structure == "cashier":
@@ -441,7 +477,6 @@ class GamePrototype:
 							game_state.win_or_lose(False)
 							game_state.set_game_state("decider-screen")
 						
-
 				
 			#draw everything on camera list
 			for sprite in self.camera.sprite_list:
@@ -455,7 +490,7 @@ class GamePrototype:
 				self.index_to_remove = 0
 				self.remove_item_from_inventory = False
 
-			self.player_inventory.text_image.text = "INVENTORY: "
+			self.player_inventory.text_image.text = "Inventory: "
 			self.player_inventory.draw(screen)
 			for i in range(0, len(self.player.inventory)):
 				item = self.player.inventory[i]
@@ -467,7 +502,7 @@ class GamePrototype:
 						break
 							
 			
-			if self.show_item_dialog:
+			if self.show_item_dialog_2:
 				self.shelf_items_text.draw(screen)
 				for i in range(0, len(self.list_to_display)):
 					item = self.list_to_display[i]

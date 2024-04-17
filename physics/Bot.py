@@ -40,12 +40,11 @@ class Bot:
 	    return pygame.transform.rotozoom(img_copy, int(self.angle-90), 1)
 
     def draw(self, screen):
-        self.hit_box.x = self.x
-        self.hit_box.y = self.y
+        self.hit_box.x = self.x - (self.width / 2)
+        self.hit_box.y = self.y - (self.height / 2)
 
         #if hit change_loc_hit_box change location
         if self.hit_box.check_hit(self.change_loc_hit_box.x, self.change_loc_hit_box.y, self.change_loc_hit_box.width, self.change_loc_hit_box.height) or self.vel_x == 0 and self.vel_y == 0:
-            print("change")
             self.change_loc_hit_box.x = random.randrange(100, SCREEN_WIDTH - 100)
             self.change_loc_hit_box.y = random.randrange(100, SCREEN_HEIGHT - 100)
 
@@ -62,4 +61,4 @@ class Bot:
         self.y += self.vel_y
 
         screen.blit(self.rotated_image, (self.x - (self.rotated_image.get_width() / 2), self.y - (self.rotated_image.get_height() / 2)))
-
+        

@@ -11,7 +11,7 @@ class DisplayText:
 		self.x = x
 		self.y = y
 		self.size = size
-		self. color = color
+		self.color = color
 		self.font = pygame.font.Font("./font/fff-forward.regular.ttf", self.size)
 		
 		self.type_letter = 0

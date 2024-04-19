@@ -23,6 +23,8 @@ class Camera:
 			elif face == "down":
 				sprite.y -= self.vel
 			elif face == "left":
-				sprite.x += self.vel
+				sprite.x += self.vel	
 			elif face == "right":
 				sprite.x -= self.vel
+					
+				

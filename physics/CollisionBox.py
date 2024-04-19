@@ -3,6 +3,7 @@ pygame.init()
 
 class CollisionBox:
 	def __init__(self, x, y, width, height):
+		self.structure = "cb"
 		self.x = x
 		self.y = y
 		self.width = width

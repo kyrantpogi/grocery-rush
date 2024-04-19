@@ -16,8 +16,9 @@ from Item import Item
 from Shelf import Shelf
 from Cashier import Cashier
 from Bot import Bot
-from Puddle import Puddle
+from Mosquito import Mosquito
 
+pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.init()
 
 SCREEN_WIDTH = 1200
@@ -26,6 +27,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("100")
 
 running = True
+level_gloal = None
+current_level_global = 0
 
 def print_clear(text):
 	os.system("cls")
@@ -43,6 +46,11 @@ def random_hex():
 def load_JSON(file):
 	file = open(f"""./saves/{file}""", "r")
 	return json.loads(file.read())
+
+def save_json(file, x):
+	file = open(f"./saves/{file}", "w")
+	file.write(json.dumps(x, indent=4))
+	return True
 		
 class GameStateManager:
 	def __init__(self, first_state):
@@ -72,14 +80,17 @@ class GameStateManager:
 	def reset_level(self):
 		self.game.__init__()
 
+	def repeat_decider_music(self):
+		self.decider_screen.play_music = True
+
 class StartScreen:
 	def __init__(self):
 		self.bg = "#000000"
 		self.welcome_text = DisplayText("Grocery Rush",y=200, size=30, color="#ffffff")
 
-		self.play_btn = Button(348, 400, pygame.image.load("./assets/Buttons/play.png"), 1)
-		self.mechanics_btn = Button(552, 400, pygame.image.load("./assets/Buttons/mechanics.png"), 1)
-		self.exit_btn = Button(756, 400, pygame.image.load("./assets/Buttons/exit.png"), 1)
+		self.play_btn = Button(348, 400, pygame.image.load("./assets/Buttons/play.png").convert_alpha(), 1)
+		self.mechanics_btn = Button(552, 400, pygame.image.load("./assets/Buttons/mechanics.png").convert_alpha(), 1)
+		self.exit_btn = Button(756, 400, pygame.image.load("./assets/Buttons/exit.png").convert_alpha(), 1)
 
 	def run(self, screen, game_state):
 		global running
@@ -96,6 +107,7 @@ class StartScreen:
 		self.welcome_text.cutscene_text_draw(screen)
 
 		if self.play_btn.click(screen):
+			game_state.reset_level()
 			game_state.set_game_state("game")
 		if self.mechanics_btn.click(screen):
 			game_state.set_game_state("mechanics")
@@ -109,10 +121,17 @@ class DeciderScreen:
 
 		self.text = DisplayText("?", 0, 0, 35)
 
+		self.loading_text = DisplayText("[Game Saved]", 5, 5, 10)
+
 		self.winner_sound = pygame.mixer.Sound("./music/winner.mp3")
 		self.loser_sound = pygame.mixer.Sound("./music/bsod.mp3")
 
 		self.play_music = True
+
+		self.saved = False
+
+		self.play_button = Button(453, 456, pygame.image.load("./assets/Buttons/mechanics.png").convert_alpha(), 0.7)
+		self.replay_button = Button(661, 456, pygame.image.load("./assets/Buttons/replay.png").convert_alpha(), 0.7)
 
 	def run(self, screen, game_state):
 		global running
@@ -125,29 +144,48 @@ class DeciderScreen:
 
 		screen.fill("#000000")
 
-		keys = pygame.key.get_pressed()
-
-		if keys[pygame.K_p]:
-			game_state.reset_level()
-			game_state.set_game_state("game")
-			return
-
 		if self.win:
 			if self.play_music:
-				# self.winner_sound.play()
+				self.winner_sound.play()
 				self.play_music = False
 			self.text.text = "CONGRATULATIONS!"
 			self.text.draw_text_center(screen)
 
+			for level in level_global:
+				if level["level"] == current_level_global["level"]:
+					level["done"] = "yes"
+					break
+			if not self.saved:
+				if save_json("levels.json", level_global):
+					self.saved = True
+
+			self.loading_text.draw_text(screen)
+
+			
+
 		else:
 			if self.play_music:
-				# self.loser_sound.play()
+				self.loser_sound.play()
 				self.play_music = False
 			self.text.text = "TRY AGAIN!"
 			self.text.draw_text_center(screen)
 
+		if self.play_button.click(screen):
+			game_state.set_game_state("start-menu")
+
+		if self.replay_button.click(screen):
+			game_state.reset_level()
+			game_state.set_game_state("game")
+			return
+			
+
+		
+
 class GamePrototype:
 	def __init__(self):
+		global level_global
+		global current_level_global
+
 		self.typing_sound = pygame.mixer.Sound("./music/typingsound.mp3")
 		#load level
 		self.vegetable_items = load_JSON("vegetable.json")
@@ -156,25 +194,30 @@ class GamePrototype:
 
 		self.levels = load_JSON("levels.json")
 
+		level_global = self.levels
+
 		self.level = None
 
 		for level in self.levels:
 			if level["done"] == "no":
 				self.level = level
+				current_level_global = self.level
 				break
 
+		print(level_global)
 		self.requirements_to_win = self.level["requirements"]
 
 		#player
-		self.player = Player(300, 131, "#D2042D")
+		self.player = Player(300, 231, "#D2042D")
 		self.player_velocity = 3
 
 		#cashier 
 		self.cashier = Cashier(-7, 131)
 
 		#FIXED VARIABLES
+		self.wall_hit_box = CollisionBox(0, 0, SCREEN_WIDTH, 130)
 		self.camera = Camera(self.player, (SCREEN_WIDTH/2) - 150, (SCREEN_HEIGHT/2) - 150, 300, 300, 3)
-		self.camera.sprite_list = [self.cashier]
+		self.camera.sprite_list = [self.wall_hit_box, self.cashier]
 
 		self.background = pygame.image.load("./assets/bg-1440-2.png").convert()
 		self.background_x = 0
@@ -182,10 +225,26 @@ class GamePrototype:
 		self.background_width = self.background.get_width()
 		self.background_height = self.background.get_height()
 
+
+		self.bot_points = [
+			[1440, 550],
+			[713, 318],
+			[166, 576],
+			[198, 874],
+			[713, 721],
+			[427, 524],
+			[684, 524],
+			[784, 524],
+			[1358, 152]
+		]
+
+		self.bot_count = random.randrange(1,10)
+
 		#load bots
-		for bot in self.level["bots"]:
-			faces = ["up", "down", "left", "right"]
-			b = Bot(bot["x"], bot["y"], faces[random.randrange(0, len(faces))])
+		for i in range(0, self.bot_count):
+			random_index = random.randrange(0, len(self.bot_points))
+			b = Bot(self.bot_points[random_index][0], self.bot_points[random_index][1])
+			self.bot_points.pop(random_index) #DONT REPEAT
 			self.camera.sprite_list.append(b)
 
 		self.shelf_list = []
@@ -216,10 +275,12 @@ class GamePrototype:
 			self.shelf_list.append(shelf)
 			self.camera.sprite_list.append(shelf)
 
-		#load puddles
-		for puddle in self.level["puddles"]:
-			p = Puddle(puddle["x"], puddle["y"])
-			self.camera.sprite_list.append(p)
+		#load mosquitos
+		self.mosquito_count = random.randrange(2, 11)
+		for i in range(0, self.mosquito_count):
+			m = Mosquito(random.randrange(10, SCREEN_WIDTH - 10), random.randrange(10, SCREEN_HEIGHT - 10))
+			self.camera.sprite_list.append(m)
+		
 
 		self.player_inventory = DialogBox("?", 0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50, 20)
 		self.shelf_items_text = DialogBox("Shelf Items: ", 299.5, 174.5, 600, 350, 20)
@@ -274,6 +335,10 @@ class GamePrototype:
 		self.mouse_rect = CollisionBox(0, 0, 10, 10)
 
 		self.show_item_dialog_2 = False
+
+		self.keyboard_sound = pygame.mixer.Sound("./music/typingsound.mp3")
+
+		self.grocery_sound = pygame.mixer.Sound("./music/grocery.mp3")
 	
 	def show_timer(self):
 		pygame.draw.rect(screen, self.player.health_bar_color, (SCREEN_WIDTH - 110, 10, self.player.health, 10)) #health bar
@@ -305,7 +370,9 @@ class GamePrototype:
 						self.player.is_moving = True
 
 				if event.button == 1:
-					print("LEFT CLICK")
+					mouseX, mouseY = pygame.mouse.get_pos()
+					print(f"[{mouseX}, {mouseY}],")
+
 					self.player.is_moving = False
 					self.vel_x = 0
 					self.vel_y = 0
@@ -315,48 +382,64 @@ class GamePrototype:
 					print(self.show_item_dialog)
 					if self.show_item_dialog:
 						self.show_item_dialog_2 = not self.show_item_dialog_2
-						print("go")
-						
-
+			
 			if event.type == pygame.KEYUP:
 				if event.key == pygame.K_w:
 					#search through bots
 					for structure in self.camera.sprite_list:
-						if structure.structure == "bot":
+						if structure.structure == "mosquito":
 							structure.vel_x = 0
 							structure.vel_y = 0
 				if event.key == pygame.K_s:
 					for structure in self.camera.sprite_list:
-						if structure.structure == "bot":
+						if structure.structure == "mosquito":
 							structure.vel_x = 0
 							structure.vel_y = 0
 				if event.key == pygame.K_a:
 					#search through bots
 					for structure in self.camera.sprite_list:
-						if structure.structure == "bot":
+						if structure.structure == "mosquito":
 							structure.vel_x = 0
 							structure.vel_y = 0
 				if event.key == pygame.K_d:
 					for structure in self.camera.sprite_list:
-						if structure.structure == "bot":
+						if structure.structure == "mosquito":
 							structure.vel_x = 0
 							structure.vel_y = 0
+
+		
+						
 	
 		if self.cutscene:
 			screen.fill("#000000")
-			# self.typing_sound.play()
+			self.keyboard_sound.play()
 			is_done = self.cutscene_text.typewriter(screen)
 			
 			
 			if is_done:
 				print("done")
+				self.keyboard_sound.stop()
 				self.cutscene = False
 
 		else: #start game
-
+			# self.grocery_sound.play()
 			screen.blit(self.background, (self.background_x,self.background_y)) #draw background
+
+			player_hit_box = self.player.hit_box
+			if self.wall_hit_box.check_hit(player_hit_box.x, player_hit_box.y, player_hit_box.width, player_hit_box.height):
+				self.player.vel_x = 0
+				self.player.vel_y = 0
+				self.player.y += 10
+			
 			
 			keys = pygame.key.get_pressed()
+
+			if self.player.health <= 0:
+				print(self.player.health)
+				self.grocery_sound.stop()
+				game_state.win_or_lose(False)
+				game_state.repeat_decider_music()
+				game_state.set_game_state("decider-screen")
 
 			if not self.show_item_dialog_2:
 				if keys[pygame.K_w]:
@@ -399,13 +482,10 @@ class GamePrototype:
 
 			for structure in self.camera.sprite_list:
 				phb = self.player.hit_box
-				if structure.structure == "puddle":
-					puddle_hb = structure.hit_box
-					if phb.check_hit(puddle_hb.x, puddle_hb.y, puddle_hb.width, puddle_hb.height):
-						self.player_velocity += 15
-						break
-					else:
-						self.player_velocity = 3
+				if structure.structure == "mosquito":
+					mosquito_hb = structure.hit_box
+					if phb.check_hit(mosquito_hb.x, mosquito_hb.y, mosquito_hb.width, mosquito_hb.height):
+						self.player.health -= 0.002
 
 			if self.player.hit_box.check_hit(self.mouse_rect.x, self.mouse_rect.y, self.mouse_rect.width, self.mouse_rect.height):
 				self.vel_x = 0
@@ -414,7 +494,7 @@ class GamePrototype:
 			self.player.move(self.vel_x, self.vel_y)
 			self.player.draw(screen, self.target_x, self.target_y)
 
-			#collision loop for shelf, bots, and puddle
+			#collision loop for shelf, bots, and mosquito
 			for structure in self.camera.sprite_list: # FOR THE DIALOG BOX ONLY
 				phb = self.player.hit_box
 				if structure.structure == "shelf":
@@ -446,16 +526,9 @@ class GamePrototype:
 				if structure.structure == "bot":
 					bhb = structure.hit_box
 					if phb.check_hit(bhb.x, bhb.y, bhb.width, bhb.height):
-						self.player.health -= 1
+						self.player.health -= 0.002
 
-					#check if it hit a shelf
-					for building in self.camera.sprite_list:
-						if building.structure == "shelf":
-							shelf_hit_box = building.hit_box_inner
-							if shelf_hit_box.check_hit(structure.hit_box.x, structure.hit_box.y, structure.hit_box.width, structure.hit_box.height):
-								structure.vel_x = 0 # RESET
-								structure.vel_y = 0 # RESET
-								break
+					
 
 				#THIS WILL DETERMINE THE WINNER
 				if structure.structure == "cashier":
@@ -471,10 +544,19 @@ class GamePrototype:
 									break
 								
 						if player_score == score_to_beat:
+							for item in self.player.inventory:
+								print(f"[{item.brand}]")
+							self.grocery_sound.stop()
 							game_state.win_or_lose(True)
+							game_state.repeat_decider_music()
 							game_state.set_game_state("decider-screen")
 						else:
+							for item in self.player.inventory:
+								print(f"[{item.brand}]")
+							
+							self.grocery_sound.stop()
 							game_state.win_or_lose(False)
+							game_state.repeat_decider_music()
 							game_state.set_game_state("decider-screen")
 						
 				
@@ -525,7 +607,7 @@ if __name__ == "__main__":
 	fps_text = DisplayText("?", 10, 10, 20, random_hex())
 	show_fps = False
 
-	game_state_manager = GameStateManager("game")
+	game_state_manager = GameStateManager("start-menu")
 
 	event_ = None
 

@@ -1,7 +1,7 @@
 [
     {
         "level": 2,
-        "done": "yes",
+        "done": "no",
         "cutscene-text": "Your mother told you to buy some Cusina eggs and Delica tomatoes......... Sinabi ng nanay mo na bumili ng Cusina na itlog at Delica na kamatis....... ",
         "shelves": [
             {
@@ -117,7 +117,7 @@
     },
     {
         "level": 3,
-        "done": "yes",
+        "done": "no",
         "cutscene-text": "Your mother told you to buy the cheapest hotdogs and nuggets, and some Benta eggs for breakfast tomorrow. . . Sinabi ng nanay mo na bumili ka ng pinakamurang hotdog at nuggets at Benta na itlog para sa almusal kinabuksan.",
         "shelves": [
             {
@@ -224,10 +224,10 @@
         "puddles": [],
         "requirements": [
             {
-                "name": "Hotdogs A"
+                "name": "Hotdog A"
             },
             {
-                "name": "Nuggets A"
+                "name": "Nugget A"
             },
             {
                 "name": "Egg B"
@@ -941,7 +941,7 @@
         "puddles": [],
         "requirements": [
             {
-                "name": "Nuggetss C"
+                "name": "Nuggets C"
             },
             {
                 "name": "Broccoli B"
@@ -1551,10 +1551,10 @@
         "puddles": [],
         "requirements": [
             {
-                "name": "Hotdogs A"
+                "name": "Hotdog A"
             },
             {
-                "name": "Nuggetss A"
+                "name": "Nuggets A"
             },
             {
                 "name": "Chicken A"

@@ -39,3 +39,7 @@ class Item:
 
 		if self.is_equipped:
 			screen.blit(self.x_image, (self.btn.rect.x, self.btn.rect.y))
+
+	def draw(self, screen, pos):
+		self.btn.rect.topleft = pos
+		screen.blit(self.image, (pos[0], pos[1]))

@@ -17,6 +17,7 @@ from Shelf import Shelf
 from Cashier import Cashier
 from Bot import Bot
 from Mosquito import Mosquito
+from Wall import Wall
 
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.init()
@@ -24,7 +25,10 @@ pygame.init()
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 700
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("100")
+pygame.display.set_caption("Grocery Rush")
+
+icon = pygame.image.load("./assets/GameIcon.png").convert()
+pygame.display.set_icon(icon)
 
 running = True
 level_gloal = None
@@ -48,7 +52,9 @@ def load_JSON(file):
 	return json.loads(file.read())
 
 def save_json(file, x):
+	global level_global
 	file = open(f"./saves/{file}", "w")
+	print(json.dumps(level_global, indent=4))
 	file.write(json.dumps(x, indent=4))
 	return True
 		
@@ -58,12 +64,14 @@ class GameStateManager:
 		self.start = StartScreen()
 		self.game = GamePrototype()
 		self.decider_screen = DeciderScreen()
+		self.mechanics_screen = Mechanics()
 		
 
 		self.states = {
 			"start-menu": self.start,
 			"game": self.game,
-			"decider-screen": self.decider_screen
+			"decider-screen": self.decider_screen,
+			"mechanics-screen": self.mechanics_screen
 		}
 
 		self.current_state = first_state
@@ -75,6 +83,7 @@ class GameStateManager:
 		return self.current_state
 
 	def win_or_lose(self, winner=False):
+		self.decider_screen.reset_save()
 		self.decider_screen.win = winner 
 
 	def reset_level(self):
@@ -109,11 +118,40 @@ class StartScreen:
 		if self.play_btn.click(screen):
 			game_state.reset_level()
 			game_state.set_game_state("game")
+			return
 		if self.mechanics_btn.click(screen):
-			game_state.set_game_state("mechanics")
+			game_state.set_game_state("mechanics-screen")
+			return
 		if self.exit_btn.click(screen):
 			pygame.quit()
 			sys.exit()
+
+class Mechanics:
+	def __init__(self):
+
+		self.page = pygame.image.load("./assets/mechanics/1.png").convert()
+		self.page_rect = self.page.get_rect(topleft=(0, 0))
+
+		self.prices = pygame.image.load("./assets/mechanics/prices.png").convert()
+		self.prices_rect = self.prices.get_rect(topleft=(601, 0))
+
+	def run(self, screen, game_state):
+		global running
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				running = False
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if event.button == 3:
+					print("clicked")
+		screen.fill("#000000")
+
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_ESCAPE]:
+			game_state.set_game_state("start-menu")
+
+		screen.blit(self.page, self.page_rect)
+		screen.blit(self.prices, (self.prices_rect))
+
 		
 class DeciderScreen:
 	def __init__(self, win=False):
@@ -132,6 +170,10 @@ class DeciderScreen:
 
 		self.play_button = Button(453, 456, pygame.image.load("./assets/Buttons/mechanics.png").convert_alpha(), 0.7)
 		self.replay_button = Button(661, 456, pygame.image.load("./assets/Buttons/replay.png").convert_alpha(), 0.7)
+		self.next_level = Button(661, 456, pygame.image.load("./assets/Buttons/next-level.png").convert_alpha(), 0.7)
+
+	def reset_save(self):
+		self.saved = False
 
 	def run(self, screen, game_state):
 		global running
@@ -158,10 +200,13 @@ class DeciderScreen:
 			if not self.saved:
 				if save_json("levels.json", level_global):
 					self.saved = True
-
+			
 			self.loading_text.draw_text(screen)
 
-			
+			if self.next_level.click(screen):
+				game_state.reset_level()
+				game_state.set_game_state("game")
+				return
 
 		else:
 			if self.play_music:
@@ -170,13 +215,15 @@ class DeciderScreen:
 			self.text.text = "TRY AGAIN!"
 			self.text.draw_text_center(screen)
 
+			if self.replay_button.click(screen):
+				game_state.reset_level()
+				game_state.set_game_state("game")
+				return
+
 		if self.play_button.click(screen):
 			game_state.set_game_state("start-menu")
 
-		if self.replay_button.click(screen):
-			game_state.reset_level()
-			game_state.set_game_state("game")
-			return
+		
 			
 
 		
@@ -203,8 +250,6 @@ class GamePrototype:
 				self.level = level
 				current_level_global = self.level
 				break
-
-		print(level_global)
 		self.requirements_to_win = self.level["requirements"]
 
 		#player
@@ -215,9 +260,9 @@ class GamePrototype:
 		self.cashier = Cashier(-7, 131)
 
 		#FIXED VARIABLES
-		self.wall_hit_box = CollisionBox(0, 0, SCREEN_WIDTH, 130)
+		self.wall = Wall(0, 0, SCREEN_WIDTH, 130)
 		self.camera = Camera(self.player, (SCREEN_WIDTH/2) - 150, (SCREEN_HEIGHT/2) - 150, 300, 300, 3)
-		self.camera.sprite_list = [self.wall_hit_box, self.cashier]
+		self.camera.sprite_list = [self.wall, self.cashier]
 
 		self.background = pygame.image.load("./assets/bg-1440-2.png").convert()
 		self.background_x = 0
@@ -248,6 +293,29 @@ class GamePrototype:
 			self.camera.sprite_list.append(b)
 
 		self.shelf_list = []
+
+		self.requirement_item_list = []
+		#get items
+		for requirement_item in self.requirements_to_win:
+			for item in self.frozen_items["items"]:
+				if item["name"] == requirement_item["name"]:
+					product = Item(item["name"], item["price"], item["image"])
+					self.requirement_item_list.append(product)
+					break
+
+			for item in self.vegetable_items["items"]:
+				if item["name"] == requirement_item["name"]:
+					product = Item(item["name"], item["price"], item["image"])
+					self.requirement_item_list.append(product)
+					break
+
+			for item in self.shelf_items["items"]:
+				if item["name"] == requirement_item["name"]:
+					product = Item(item["name"], item["price"], item["image"])
+					self.requirement_item_list.append(product)
+					break
+
+		print(self.requirement_item_list)
 
 		#load shelves
 		for prop in self.level["shelves"]:
@@ -320,6 +388,7 @@ class GamePrototype:
 		
 		self.cutscene = True
 		self.cutscene_text = DisplayText(self.level["cutscene-text"], size=14,color="#ffffff")
+		self.level_label = DisplayText(str(self.level["level"]), 10, 10, size=10)
 
 		self.current_shelf = ""
 
@@ -339,10 +408,49 @@ class GamePrototype:
 		self.keyboard_sound = pygame.mixer.Sound("./music/typingsound.mp3")
 
 		self.grocery_sound = pygame.mixer.Sound("./music/grocery.mp3")
+
+		self.health_text = DisplayText(str(round(self.player.health, 1)), SCREEN_WIDTH - 80, 13, size=15, color=self.player.health_bar_color)
+
+		self.item_guide_pos = [
+			[10, 0],
+			[74, 0],
+			[138, 0],
+			[212, 0],
+			[286, 0],
+			[286, 0],
+			[360, 0],
+			[434, 0],
+			[434, 0],
+			[508, 0]
+		]
+
+		self.money_text = DisplayText(str(self.player.money), SCREEN_WIDTH - 210, 13, size=15, color="#4F7942")
+
+		self.coin = pygame.image.load("./assets/coin.png").convert_alpha()
+		self.coin_image = pygame.transform.scale(self.coin, (self.coin.get_width() * 0.4, self.coin.get_height() * 0.4))
+
+		self.stopwatch = pygame.image.load("./assets/stopwatch.png").convert_alpha()
+		self.stopwatch_image = pygame.transform.scale(self.stopwatch, (self.stopwatch.get_width() * 0.3, self.stopwatch.get_height() * 0.3))
 	
-	def show_timer(self):
-		pygame.draw.rect(screen, self.player.health_bar_color, (SCREEN_WIDTH - 110, 10, self.player.health, 10)) #health bar
-		pygame.draw.rect(screen, "#ffffff", (SCREEN_WIDTH - 110, 9, 101, 10+1), 3) #BACKGROUND
+	def show_timer_and_guide(self, screen):
+		self.player.money = 100
+		# pygame.draw.rect(screen, self.player.health_bar_color, (SCREEN_WIDTH - 110, 10, self.player.health, 10)) #health bar
+		for i in range(0, len(self.requirement_item_list)): # item guide
+			self.requirement_item_list[i].draw(screen, self.item_guide_pos[i])
+
+		for item in self.player.inventory:
+			self.player.money -= item.price
+
+		pygame.draw.rect(screen, "#ffffff", (SCREEN_WIDTH - 240, 9, 101, 24))
+		screen.blit(self.coin_image, (SCREEN_WIDTH - 240, 10))
+		self.money_text.text = str(round(self.player.money, 1))
+		self.money_text.draw_text(screen)
+
+		pygame.draw.rect(screen, "#ffffff", (SCREEN_WIDTH - 110, 9, 101, 24)) #BACKGROUND
+		screen.blit(self.stopwatch_image, (SCREEN_WIDTH - 110, 9))
+		self.health_text.text = str(round(self.player.health, 1))
+		self.health_text.draw_text(screen)
+		
 	
 
 	def run(self, screen, game_state):
@@ -413,6 +521,8 @@ class GamePrototype:
 		if self.cutscene:
 			screen.fill("#000000")
 			self.keyboard_sound.play()
+
+			self.level_label.draw_text(screen)
 			is_done = self.cutscene_text.typewriter(screen)
 			
 			
@@ -421,21 +531,25 @@ class GamePrototype:
 				self.keyboard_sound.stop()
 				self.cutscene = False
 
-		else: #start game
-			# self.grocery_sound.play()
+		else: # =========================================start game=========================================
+			self.grocery_sound.play()
 			screen.blit(self.background, (self.background_x,self.background_y)) #draw background
-
-			player_hit_box = self.player.hit_box
-			if self.wall_hit_box.check_hit(player_hit_box.x, player_hit_box.y, player_hit_box.width, player_hit_box.height):
-				self.player.vel_x = 0
-				self.player.vel_y = 0
+			
+			if self.player.hit_box.check_hit(self.wall.hit_box.x, self.wall.hit_box.y, self.wall.hit_box.width, self.wall.hit_box.height):
 				self.player.y += 10
-			
-			
+				self.vel_x = 0
+				self.vel_y = 0
+
+						
 			keys = pygame.key.get_pressed()
 
+			if self.player.money <= 0:
+				self.grocery_sound.stop()
+				game_state.win_or_lose(False)
+				game_state.repeat_decider_music()
+				game_state.set_game_state("decider-screen")
+
 			if self.player.health <= 0:
-				print(self.player.health)
 				self.grocery_sound.stop()
 				game_state.win_or_lose(False)
 				game_state.repeat_decider_music()
@@ -564,7 +678,7 @@ class GamePrototype:
 			for sprite in self.camera.sprite_list:
 				sprite.draw(screen)
 
-			self.show_timer()
+			self.show_timer_and_guide(screen)
 
 			#create checker
 			if self.remove_item_from_inventory:
@@ -604,7 +718,7 @@ class GamePrototype:
 if __name__ == "__main__":
 	
 
-	fps_text = DisplayText("?", 10, 10, 20, random_hex())
+	fps_text = DisplayText("?", 10, 10, 10, random_hex())
 	show_fps = False
 
 	game_state_manager = GameStateManager("start-menu")

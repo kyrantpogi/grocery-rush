@@ -21,7 +21,7 @@ class DisplayText:
 		self.multiline_index = 0
 
 		self.global_lines = self.__get_lines(self.text)
-		print(self.global_lines)
+		# # # print(self.global_lines)
 
 		self.final_lines = []
 
@@ -114,7 +114,7 @@ class DisplayText:
 			return True
 		
 		if line_is_done:
-			print(self.multiline_index)
+			# # # print(self.multiline_index)
 			self.final_lines.append(self.global_lines[self.multiline_index])
 			if self.multiline_index < len(self.global_lines):
 				self.multiline_index += 1

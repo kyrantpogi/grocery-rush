@@ -1,7 +1,7 @@
 [
     {
-        "level": 1,
-        "done": "yes",
+        "level": 2,
+        "done": "no",
         "cutscene-text": "Your mother told you to buy some Cusina eggs and Delica tomatoes......... Sinabi ng nanay mo na bumili ng Cusina na itlog at Delica na kamatis....... ",
         "shelves": [
             {
@@ -116,8 +116,8 @@
         ]
     },
     {
-        "level": 2,
-        "done": "yes",
+        "level": 3,
+        "done": "no",
         "cutscene-text": "Your mother told you to buy the cheapest hotdogs and nuggets, and some Benta eggs for breakfast tomorrow. . . Sinabi ng nanay mo na bumili ka ng pinakamurang hotdog at nuggets at Benta na itlog para sa almusal kinabuksan.",
         "shelves": [
             {
@@ -224,10 +224,10 @@
         "puddles": [],
         "requirements": [
             {
-                "name": "Hotdogs A"
+                "name": "Hotdog A"
             },
             {
-                "name": "Nuggets A"
+                "name": "Nugget A"
             },
             {
                 "name": "Egg B"
@@ -235,8 +235,8 @@
         ]
     },
     {
-        "level": 3,
-        "done": "yes",
+        "level": 4,
+        "done": "no",
         "cutscene-text": "Your mother told you to buy garlic, onion, and potato, but due to the recent news of a possible outbreak, she told you to avoid all of the cheaper products. Sinabi ng nanay mo na bumili ka ng bawang, sibuyas, at patatas, ngunit dahil sa balita ng posibleng outbreak, sinabihan ka niya na iwasan lahat ng mumurahing produkto. . . ",
         "shelves": [
             {
@@ -354,7 +354,7 @@
         ]
     },
     {
-        "level": 4,
+        "level": 5,
         "done": "no",
         "cutscene-text": "Your mother told you to buy some milk and coffee, she said she likes the taste of Cusina products most. Sinabi ng nanay mo na bumili ka ng gatas at kape, sinabi niya na pinakagusto niya ang lasa ng mga produkto ng Cusina. . . . . . . . ",
         "shelves": [
@@ -470,7 +470,7 @@
         ]
     },
     {
-        "level": 5,
+        "level": 6,
         "done": "no",
         "cutscene-text": "Your dad wants to surprise your mom tomorrow with a hearty meal, he asks you to buy him the finest pork and the best rice you can buy, along with the most fresh garlic and onions in the market. . . Gusto ng tatay mo na sorpresahin ang nanay mo bukas ng masaganang pagkain, bilhan mo daw siya ng pinakagandang baboy at pinakamabuting bigas na mabibili mo, kasama ng pinakasariwa na bawang at sibuyas na nasa pamilihan. . . . . ",
         "shelves": [
@@ -592,9 +592,9 @@
         ]
     },
     {
-        "level": 6,
+        "level": 7,
         "done": "no",
-        "cutscene-text": "Happy with your father's surprise noterday, your mother wants to / surprise your father back. She remembers that the first dish / she cooked for your father was chicken curry. She asked / you to buy chicken, potato, and carrots. She said that / he likes the taste of Cropped vegetables and Bountiful meat. Masaya sa surpresa ng tatay mo kahapon, gusto ng nanay / mo sorpresahin ang iyong tatay pabalik. Naalala niya ang unang / ulam na niluto niya para sa iyong ama ay chicken / curry. Inutusan kang bumili ng manok, patatas, at karot. Sinabi / ng nanay mo na gusto ng tatay mo ang lasa / ng Cropped na gulay at Bountiful na karne. ",
+        "cutscene-text": "Happy with your father's surprise yesterday, your mother wants to / surprise your father back. She remembers that the first dish / she cooked for your father was chicken curry. She asked / you to buy chicken, potato, and carrots. She said that / he likes the taste of Cropped vegetables and Bountiful meat. Masaya sa surpresa ng tatay mo kahapon, gusto ng nanay / mo sorpresahin ang iyong tatay pabalik. Naalala niya ang unang / ulam na niluto niya para sa iyong ama ay chicken / curry. Inutusan kang bumili ng manok, patatas, at karot. Sinabi / ng nanay mo na gusto ng tatay mo ang lasa / ng Cropped na gulay at Bountiful na karne. ",
         "shelves": [
             {
                 "type": "freezer",
@@ -711,7 +711,7 @@
         ]
     },
     {
-        "level": 7,
+        "level": 8,
         "done": "no",
         "cutscene-text": "Your mother told you to buy some vegetables for your pantry, which lacked some broccoli, tomato, potato, and carrots. The quality of the ingredients doesn't matter since she is just going to cook stir-fry, she said not to waste money. Sinabi ng nanay mo na bumili ka ng mga gulay para sa inyong dispensa, na nakukulangan ng mga broccoli, kamatis patatas at mga karot. Ang kalidad ng mga sangkap ay di importante dahil gigisain lang, sinabi niya na huwag magsayang ng pera. . . . . . . . . ",
         "shelves": [
@@ -833,7 +833,7 @@
         ]
     },
     {
-        "level": 8,
+        "level": 9,
         "done": "no",
         "cutscene-text": "Your dad said that he'd come late tonight, and your mother wants to leave him some food for when he gets home. She told you to buy nuggets and broccoli for an easy-to-cook meal; Bountiful and Cropped branded again, but something seems off with your father. . . Sinabi ng tatay mo na late siyang uuwi ngayong gabi at gusto ng nanay mo na mag-iwan ng pagkain kapag umuwi na siya. Sinabi niya na bumili ka ng nuggets at broccoli para madaling lutuin, Bountiful at Cropped na brand muli, ngunit parang may naiiba sa tatay mo. . . ",
         "shelves": [
@@ -949,7 +949,7 @@
         ]
     },
     {
-        "level": 9,
+        "level": 10,
         "done": "no",
         "cutscene-text": "Your mother did not ask you to buy anything today, but you know that she's mad because she saw your father with another woman. Oblivious to this, you decide to treat yourself to the most expensive juice you can buy. Hindi ka inutusan ng nanay mo ngayon na bumili, ngunit alam mo na galit siya dahil nakita niya ang iyong tatay na may kasamang ibang babae. Dahil wala kang alam, napagdesisyunan mong bumili nalang ng pinakamahal na dyus. ",
         "shelves": [
@@ -1062,7 +1062,7 @@
         ]
     },
     {
-        "level": 10,
+        "level": 11,
         "done": "no",
         "cutscene-text": "You haven't seen your father for a few days, but your mother asked you to buy a lot of groceries. She gave you a list: Cloud Chicken, Delight Coffee, Almusal Milk, Potato, Onion, and Carrot. Hindi mo nakita tatay ng ilang araw, pero pinabili ka ng iyong nanay ng maraming bilihin. Binigyan ka niya ng listahan: Cloud na manok, Delight na kape, Almusal na gatas, patatas, sibuyas, at karot. ",
         "shelves": [
@@ -1190,7 +1190,7 @@
         ]
     },
     {
-        "level": 11,
+        "level": 12,
         "done": "no",
         "cutscene-text": "Your mother said she wanted to try a new diet. It feels like your father has caused this, but you don't know. She said she wanted to try a plant-based diet of vegetables, she told you to buy all types Of vegetables and make sure to get quality ones only. Sinabi ng nanay mo na gusto niyang sumubok ng bagong Diet. Parang tatay mo ang nagdulot nito, pero hindi mo alam. Sinabi niya na gusto niyang sumubok ng plant-based na diet, sinabi niya na bilhin lahat ng klase ng gulay at siguraduhin na yung pinakasariwa lang ang bilhin. ",
         "shelves": [
@@ -1321,7 +1321,7 @@
         ]
     },
     {
-        "level": 12,
+        "level": 13,
         "done": "no",
         "cutscene-text": "Your dad called you today. Your mom told you not to answer any of his calls. She told you to buy milk and coffee. She wanted to compare the flavors of Almusal and Benta products. Tinawagan ka ng tatay mo ngayon. Sinabi ng nanay mo Na huwag sagutin ang mga tawag niya. Sinabi niya na bumili ka ng gatas at kape. Gusto niyang ikumpara ang lasa ng mga produkto ng Almusal laban sa Benta. ",
         "shelves": [
@@ -1443,9 +1443,9 @@
         ]
     },
     {
-        "level": 13,
+        "level": 14,
         "done": "no",
-        "cutscene-text": "Your mother came home in a bad mood noterday, she said that she saw your dad. She didn't ask you to buy anything today, but you want to cheer her up. You don't know her favorite foods, so you want to buy everything in the cold section except for fries. Umuwi nanay mo na nasa masamang loob kahapon, sinabi niya na nakita niya ang iyong tatay. Hindi ka pinabili ng kahit ano ngayon, ngunit gusto mo siyang pasayahin. Hindi mo alam ang paborito niyang pagkain, kaya gusto mo bilhin lahat na nasa cold section maliban sa fries. ",
+        "cutscene-text": "Your mother came home in a bad mood yesterday, she said that she saw your dad. She didn't ask you to buy anything today, but you want to cheer her up. You don't know her favorite foods, so you want to buy everything in the cold section except for fries. Umuwi nanay mo na nasa masamang loob kahapon, sinabi niya na nakita niya ang iyong tatay. Hindi ka pinabili ng kahit ano ngayon, ngunit gusto mo siyang pasayahin. Hindi mo alam ang paborito niyang pagkain, kaya gusto mo bilhin lahat na nasa cold section maliban sa fries. ",
         "shelves": [
             {
                 "type": "freezer",
@@ -1551,7 +1551,7 @@
         "puddles": [],
         "requirements": [
             {
-                "name": "Hotdogs A"
+                "name": "Hotdog A"
             },
             {
                 "name": "Nuggets A"
@@ -1565,7 +1565,7 @@
         ]
     },
     {
-        "level": 14,
+        "level": 15,
         "done": "no",
         "cutscene-text": "You see piles of letters from your dad by the doorway, all opened. Your mother asked you to buy some eggs, milk, coffee, potato, garlic, fries, and pork. She said not to buy Aftada meats. Nakakita ka ng mga letra mula sa tatay mo banda sa pintuan na nakabukas. Sinabi ng nanay mo na bumili ka ng itlog, gatas, kape, patatas, bawang, fries at baboy. Sinabi niya na huwag bumili ng karne ng Afritada. ",
         "shelves": [
@@ -1696,7 +1696,7 @@
         ]
     },
     {
-        "level": 15,
+        "level": 16,
         "done": "no",
         "cutscene-text": "You asked your mother what was happening between her and your dad. She finally confesses what has actually been going on between them. Feeling demoralized, you decide to buy every brand of juice in store to drown out the sorrow. Tinanong mo ang nanay mo kung ano ang nangyayari sa kanilang dalawa ng tatay mo. Inamin niya kung ano talaga ang nangyayari. Dala ng lungkot, pinagisipan mong bilhin ang lahat ng brand ng dyus sa pamilihan para mawala ang kalungkutan. ",
         "shelves": [
@@ -1818,9 +1818,9 @@
         ]
     },
     {
-        "level": 16,
+        "level": 17,
         "done": "no",
-        "cutscene-text": "Your mother told you that it was all a misunderstanding. It was his boss, but your dad doesn't blame her. She wants to apologize and wants to cook for him, she told you to buy the best chicken, potato, carrots, rice, and juice. Sinabi ng iyong nanay na ang lahat ng ito ay hindi pagkakaunawaan. Boss niya iyon, ngunit hindi siya sinisisi ng iyong ama. Gusto niyang humingi ng tawad at gustong ipagluto siya, sinabi niya sa iyo na bumili ng pinakamahusay na manok, patatas, karot, kanin, at dyus. ",
+        "cutscene-text": "Your mother told you that it was all a misunderstanding. It was his boss, but your dad doesn't blame her. She wants to apologize and wants to cook for him, she told you to buy the best chicken, potato, carrot, rice, and juice. Sinabi ng iyong nanay na ang lahat ng ito ay hindi pagkakaunawaan. Boss niya iyon, ngunit hindi siya sinisisi ng iyong ama. Gusto niyang humingi ng tawad at gustong ipagluto siya, sinabi niya sa iyo na bumili ng pinakamahusay na manok, patatas, karot, kanin, at dyus. ",
         "shelves": [
             {
                 "type": "freezer",

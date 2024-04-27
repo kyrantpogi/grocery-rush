@@ -25,6 +25,9 @@ class Item:
 		self.raw_image = pygame.image.load(self.image_destination).convert_alpha()
 		self.image = pygame.transform.scale(self.raw_image, (int(self.raw_image.get_width() * 1), int(self.raw_image.get_height() * 1)))
 
+		self.raw_x_image = pygame.image.load("./assets/Bag.png").convert_alpha()
+		self.x_image = pygame.transform.scale(self.raw_x_image, (int(self.raw_image.get_width() * 0.3), int(self.raw_image.get_height() * 0.3)))
+
 		self.is_equipped = False #CHECK if equiped on player's inventory
 		self.btn = Button(100, 100, self.image, 1)
 
@@ -33,3 +36,10 @@ class Item:
 
 		if self.btn.click(screen):
 			return True
+
+		if self.is_equipped:
+			screen.blit(self.x_image, (self.btn.rect.x, self.btn.rect.y))
+
+	def draw(self, screen, pos):
+		self.btn.rect.topleft = pos
+		screen.blit(self.image, (pos[0], pos[1]))
